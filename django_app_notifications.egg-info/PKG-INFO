@@ -1,4 +1,27 @@
-# django-app-notifications
+Metadata-Version: 2.1
+Name: django-app-notifications
+Version: 1.1
+Summary: A Django Library to send notifications
+Home-page: https://www.example.com/
+Author: Harsh
+Author-email: harsh@hashtrust.in
+License: MIT License
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django :: 4.1
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Communications :: Chat
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# django-mails
 
 django-notifications is Django App to create/send notification by calling just hit of single function.
 
