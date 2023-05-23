@@ -10,16 +10,16 @@ class CreatedUpdatedMixin(models.Model):
 
     created_at = models.DateTimeField(
         auto_now_add=True,
-        help_text=_("The creation time, always in Asia/Tokyo timezone."),
+        help_text=_("The creation time, always in UTC timezone."),
     )
     updated_at = models.DateTimeField(
         auto_now=True,
-        help_text=_("The last update time, always in Asia/Tokyo timezone."),
+        help_text=_("The last update time, always in UTC timezone."),
     )
 
 class Category(CreatedUpdatedMixin):
     title = models.CharField(max_length=30)
-    icon = models.ImageField(upload_to="category/icons",null=True,blank=True)
+    icon = models.ImageField(upload_to="category/icons", null=True, blank=True)
 
     def __str__(self) -> str:
         return self.title
@@ -36,18 +36,18 @@ class Notification(CreatedUpdatedMixin):
         warning = "warning", "Warning"
         info = "info", "Information"
 
-    class NotificationStatus(models.TextChoices):
+    class NotificationState(models.TextChoices):
         read = "read", "Read"
         unread = "unread", "Unread"
         deleted = "deleted", "Deleted"
 
     title = models.CharField(max_length=265)
     message = models.TextField()
-    category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     receivers = models.ManyToManyField(User, related_name="receivers_notifications")
-    sender = models.ForeignKey(User,on_delete=models.CASCADE)
-    notification_type = models.CharField(choices=NotificationTypes.choices,max_length=20)
-    notification_status = models.CharField(choices=NotificationStatus.choices,max_length=20)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    notification_type = models.CharField(choices=NotificationTypes.choices, max_length=20)
+    state = models.CharField(choices=NotificationState.choices, max_length=20)
 
     def __str__(self) -> str:
         return self.title

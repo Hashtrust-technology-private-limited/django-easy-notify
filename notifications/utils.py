@@ -12,7 +12,6 @@ def send_notification(
         notification_type : str,
         message : str = None,
         category : Category = None,
-        notification_status : str = Notification.NotificationStatus.unread,
         real_time_notification : bool = False
     ):
     """
@@ -38,9 +37,7 @@ def send_notification(
     if len(receivers) == 0:
         return "Please provide atleast one receiver."
     if notification_type not in list(dict(Notification.NotificationTypes.choices).keys()):
-        return "Please provide valida notification type. It should be any of ['success', 'error', 'warning', 'info']."
-    if notification_status not in list(dict(Notification.NotificationStatus.choices).keys()):
-        return "Please provide valida notification status. It should be any of ['read', 'unread', 'deleted']."
+        return "Please provide valid notification type. It should be one of ['success', 'error', 'warning', 'info']."
 
     notification = Notification.objects.create(
         title = title,
@@ -48,7 +45,7 @@ def send_notification(
         category = category,
         sender = sender,
         notification_type = notification_type,
-        notification_status = notification_status
+        state = Notification.NotificationState.unread
     )
     for receiver in receivers:
         notification.receivers.add(receiver)
@@ -63,6 +60,7 @@ def send_notification(
                 "message": {"title":title,"message":message},
             },
         )
+    return "Notification sent successfully."
 
 def get_notifications(user, notification_status = None):
     if not notification_status:

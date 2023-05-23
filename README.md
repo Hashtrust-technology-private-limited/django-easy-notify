@@ -29,7 +29,6 @@ send_notification(
     notification_type : str,
     message : str = None,
     category : Category = None,
-    notification_status : str = Notification.NotificationStatus.unread,
     real_time_notification : bool = False
 )
 ```
