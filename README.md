@@ -14,7 +14,7 @@ Quick Start
 2. Run ``python manage.py migrate`` to create the django-mails models.
 3. Add Templates path to your TEMPLATES in setting.py
 4. import method to send email ``from notifications.utils import send_notification``
-5. Use method ``from notifications.utils import get_notifications`` to receive notifications based on status/all notifications. 
+5. Use method ``from notifications.utils import get_notifications`` to receive notifications based on status/all notifications.
 
 
 Description
@@ -32,20 +32,20 @@ send_notification(
     real_time_notification : bool = False
 )
 ```
-* This function will create in-app notification with required details. 
+* This function will create in-app notification with required details.
 
 * Parameters:
 1. title : string
 2. receivers : List of User model instance
 3. sender : User model instance
-4. notification_type : 
+4. notification_type :
     a. success
     b. error
     c. warning
     d. info
 5. message : string
 6. category : Category Model instance
-7. notification_status : 
+7. notification_status :
     a. read
     b. unread
     c. deleted

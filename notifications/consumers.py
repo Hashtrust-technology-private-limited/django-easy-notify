@@ -1,18 +1,20 @@
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
 import json
-from asgiref.sync import async_to_sync
+
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 
 class NotificationConsumer(AsyncJsonWebsocketConsumer):
-    
+
     # Function to connect to the websocket
     async def connect(self):
-       # Checking if the User is logged in
+        # Checking if the User is logged in
         if self.scope["user"].is_anonymous:
             # Reject the connection
             await self.close()
         else:
-            self.group_name = str(self.scope["user"].pk)  # Setting the group name as the pk of the user primary key as it is unique to each user. The group name is used to communicate with the user.
+            self.group_name = str(
+                self.scope["user"].pk
+            )  # Setting the group name as the pk of the user primary key as it is unique to each user. The group name is used to communicate with the user.
             await self.channel_layer.group_add(self.group_name, self.channel_name)
             await self.accept()
 
