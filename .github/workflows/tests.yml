@@ -19,6 +19,16 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.10.4
+      - name: Setup redis
+        uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: 6
+
+      - name: Install redis cli # so we can test the server
+        run: sudo apt-get install -y redis-tools
+
+      - name: Verify that redis is up
+        run: redis-cli ping
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
