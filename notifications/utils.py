@@ -62,23 +62,30 @@ def send_notification(
                 f"notifications_{receiver.pk}",  # Group Name, Should always be string
                 {
                     "type": "notify",  # Custom Function written in the consumers.py
-                    "message": {"title": title, "message": message},
+                    "content": [{"title": title, "message": message}],
+                    "command": "new_notification",
                 },
             )
     return "Notification sent successfully."
 
 
-def get_notifications(user, notification_status=None):
-    if not notification_status:
-        return Notification.objects.prefetch_related("receivers").filter(receivers=user)
+def get_notifications(user, notification_type=None):
+    if not notification_type:
+        return (
+            Notification.objects.prefetch_related("receivers")
+            .filter(receivers=user)
+            .values("title", "message", "notification_type")
+        )
 
-    if notification_status not in list(
+    if notification_type not in list(
         dict(Notification.NotificationStatus.choices).keys()
     ):
         return "Please provide valid notification status. It should be any of ['read', 'unread', 'deleted']."
     else:
-        return Notification.objects.prefetch_related("receivers").filter(
-            receivers=user, notification_status=notification_status
+        return (
+            Notification.objects.prefetch_related("receivers")
+            .filter(receivers=user, notification_type=notification_type)
+            .values("title", "message", "notification_type")
         )
 
 

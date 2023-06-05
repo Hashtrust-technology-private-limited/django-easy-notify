@@ -1,6 +1,9 @@
 import json
 
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+
+from notifications.models import Notification
 
 
 class NotificationConsumer(AsyncJsonWebsocketConsumer):
@@ -22,6 +25,39 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
         await self.close()
         # pass
 
+    def get_async_notifications(self):
+        self.notifications = list(
+            Notification.objects.prefetch_related("receivers")
+            .filter(
+                receivers__id__in=[int(self.user_id)],
+                state=Notification.NotificationState.unread,
+            )
+            .values("title", "message", "notification_type")
+        )
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        command = text_data_json["command"]
+        # Send message to room group
+        if command == "new_notification":
+            content = text_data_json["content"]
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {"type": "notify", "content": [content], "command": command},
+            )
+        else:
+            await database_sync_to_async(self.get_async_notifications)()
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {"type": "notify", "content": self.notifications, "command": command},
+            )
+
     # Custom Notify Function which can be called from Views or api to send message to the frontend
     async def notify(self, event):
-        await self.send(text_data=json.dumps(event["message"]))
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "content": event["content"],
+                }
+            )
+        )

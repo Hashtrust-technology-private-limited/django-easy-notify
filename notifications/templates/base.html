@@ -22,14 +22,13 @@
         // Socket On receive message Functionality
         socket.onmessage = function(e){
             console.log('message', e)
-            console.log(JSON.parse(e.data)) // Access the notification data
-            //$("body").append("<h3>"+e.data+"</h3>")
-            // Can write any functionality based on your requirement
+            console.log(JSON.parse(e.data))
         }
 
         // Socket Connet Functionality
         socket.onopen = function(e){
             console.log('open', e)
+
         }
 
         // Socket Error Functionality
