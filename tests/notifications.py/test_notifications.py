@@ -63,4 +63,4 @@ class TestNotification(TestCase):
     def test_get_notifications(self):
         response = get_notifications(self.receivers[0])
         assert len(response) == 1
-        assert self.notification.title == response.first().title
+        assert self.notification.title == response[0]["title"]
