@@ -49,7 +49,7 @@ class Notification(CreatedUpdatedMixin):
         Category, on_delete=models.SET_NULL, null=True, blank=True
     )
     receivers = models.ManyToManyField(User, related_name="receivers_notifications")
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     notification_type = models.CharField(
         choices=NotificationTypes.choices, max_length=20
     )

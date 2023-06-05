@@ -57,13 +57,14 @@ def send_notification(
     if real_time_notification:
         channel_layer = get_channel_layer()
         # Trigger message sent to group
-        async_to_sync(channel_layer.group_send)(
-            str(sender.pk),  # Group Name, Should always be string
-            {
-                "type": "notify",  # Custom Function written in the consumers.py
-                "message": {"title": title, "message": message},
-            },
-        )
+        for receiver in receivers:
+            async_to_sync(channel_layer.group_send)(
+                f"notifications_{receiver.pk}",  # Group Name, Should always be string
+                {
+                    "type": "notify",  # Custom Function written in the consumers.py
+                    "message": {"title": title, "message": message},
+                },
+            )
     return "Notification sent successfully."
 
 

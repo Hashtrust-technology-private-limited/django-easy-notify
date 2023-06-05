@@ -133,3 +133,28 @@ CHANNEL_LAYERS = {
     }
 </script>
 ```
+# Setup guideline
+
+- build: Create the build and runtime images
+```
+    docker-compose build
+```
+
+- up: Start up the project
+```
+    docker-compose up
+```
+- To see services and their ports
+```
+    docker ps
+```
+- shell: Shell into the running Django container
+```
+    docker exec -it CONTAINER ID /bin/bash
+```
+- migrate: Changes you have made to your models
+```
+   python manage.py makemigrations
+   python manage.py migrate
+   python manage.py createsuperuser
+```

@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-ove12^l=a$9dgua2j709x$!p6%wmm$@z)lyep64*s4-t!0bgyk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ENABLE_PUSH_NOTIFICATION = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -75,7 +75,7 @@ if ENABLE_PUSH_NOTIFICATION:
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [("localhost", 6379)],
+                "hosts": [("redis", 6379)],
             },
         },
     }
