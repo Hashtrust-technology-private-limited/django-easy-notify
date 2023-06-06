@@ -14,10 +14,9 @@ def send_notification(
     notification_type: str,
     message: str = None,
     category: Category = None,
-    real_time_notification: bool = False,
+    real_time_notification: bool = True,
 ):
-    """
-    This function will create in app notification with required details.
+    """This function will send in app notification.
 
     Parameters:
     1. title : string

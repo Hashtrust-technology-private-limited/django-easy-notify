@@ -20,6 +20,8 @@ class CreatedUpdatedMixin(models.Model):
 
 
 class Category(CreatedUpdatedMixin):
+    """Stores the categories of notifications"""
+
     title = models.CharField(max_length=30)
     icon = models.ImageField(upload_to="category/icons", null=True, blank=True)
 
@@ -32,6 +34,8 @@ class Category(CreatedUpdatedMixin):
 
 
 class Notification(CreatedUpdatedMixin):
+    """Stores the in app notifications of project"""
+
     class NotificationTypes(models.TextChoices):
         success = "success", "Success"
         error = "error", "Error"

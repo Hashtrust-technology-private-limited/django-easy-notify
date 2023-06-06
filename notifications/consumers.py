@@ -45,7 +45,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
                 self.room_group_name,
                 {"type": "notify", "content": [content], "command": command},
             )
-        else:
+        elif command == "fetch_all_notifications":
             await database_sync_to_async(self.get_async_notifications)()
             await self.channel_layer.group_send(
                 self.room_group_name,

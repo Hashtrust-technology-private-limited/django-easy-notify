@@ -28,7 +28,9 @@
         // Socket Connet Functionality
         socket.onopen = function(e){
             console.log('open', e)
-
+            socket.send(JSON.stringify({
+                "command":"fetch_all_notifications"
+            }))
         }
 
         // Socket Error Functionality
