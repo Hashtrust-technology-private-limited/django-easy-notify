@@ -8,6 +8,8 @@ Quick Start
     ```
     INSTALLED_APPS = [
         ...
+        'daphne',
+        'channels',
         'notifications',
     ]
     ```
@@ -83,8 +85,7 @@ Django Channels Setting
 -----------------------
 
 ```
-ASGI_APPLICATION = "django_notifications.asgi.application"
-INSTALLED_APPS.insert(0, "channels")
+ASGI_APPLICATION = "<your_project_name>".asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -93,6 +94,29 @@ CHANNEL_LAYERS = {
         },
     },
 }
+```
+
+* Update ASGI file
+
+```
+import os
+
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+from django.core.asgi import get_asgi_application
+
+import notifications.routing
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "<your_project_name>.settings")
+
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": AuthMiddlewareStack(
+            URLRouter(notifications.routing.websocket_urlpatterns)
+        ),
+    }
+)
 ```
 
 * Script to work with websockets on Frontend side.

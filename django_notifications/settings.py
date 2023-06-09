@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -70,7 +72,6 @@ TEMPLATES = [
 ]
 if ENABLE_PUSH_NOTIFICATION:
     ASGI_APPLICATION = "django_notifications.asgi.application"
-    INSTALLED_APPS.insert(0, "channels")
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
