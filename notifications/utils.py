@@ -10,8 +10,8 @@ User = get_user_model()
 def send_notification(
     title: str,
     receivers: list[User],
-    sender: User,
     notification_type: str,
+    sender: User = None,
     message: str = None,
     category: Category = None,
     real_time_notification: bool = True,
