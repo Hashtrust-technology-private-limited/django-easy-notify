@@ -1,8 +1,13 @@
 from django.test import TestCase
 
-from notifications.factories import CategoryFactory, NotificationFactory, UserFactory
 from notifications.models import Notification
-from notifications.utils import get_notifications, send_notification
+from notifications.utils import (
+    get_notifications,
+    mark_as_read,
+    mark_as_unread,
+    send_notification,
+)
+from tests.factories import CategoryFactory, NotificationFactory, UserFactory
 
 
 # Create your tests here.
@@ -64,3 +69,24 @@ class TestNotification(TestCase):
         response = get_notifications(self.receivers[0])
         assert len(response) == 1
         assert self.notification.title == response[0]["title"]
+
+    def test_get_notifications_by_type(self):
+        self.warning_notification = NotificationFactory(
+            notification_type=Notification.NotificationTypes.warning
+        )
+        self.warning_notification.receivers.add(self.receivers[0])
+        response = get_notifications(
+            self.receivers[0], Notification.NotificationTypes.warning
+        )
+        assert len(response) == 1
+        assert self.warning_notification.title == response[0]["title"]
+
+    def test_mark_notifications_as_read(self):
+        response = mark_as_read(self.receivers[0])
+        assert response == f"Notifications of user {self.receivers[0]} marked as read."
+
+    def test_mark_notifications_as_unread(self):
+        response = mark_as_unread(self.receivers[0])
+        assert (
+            response == f"Notifications of user {self.receivers[0]} marked as unread."
+        )

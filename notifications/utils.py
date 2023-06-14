@@ -77,9 +77,9 @@ def get_notifications(user, notification_type=None):
         )
 
     if notification_type not in list(
-        dict(Notification.NotificationStatus.choices).keys()
+        dict(Notification.NotificationTypes.choices).keys()
     ):
-        return "Please provide valid notification status. It should be any of ['read', 'unread', 'deleted']."
+        return "Please provide valid notification status. It should be any of ['success', 'error', 'warning', 'info']."
     else:
         return (
             Notification.objects.prefetch_related("receivers")
@@ -90,11 +90,14 @@ def get_notifications(user, notification_type=None):
 
 def mark_as_read(user):
     Notification.objects.filter(
-        receivers=user, notification_status=Notification.NotificationStatus.unread
-    ).update(notification_status=Notification.NotificationStatus.read)
+        receivers=user, state=Notification.NotificationState.unread
+    ).update(state=Notification.NotificationState.read)
+
+    return f"Notifications of user {user} marked as read."
 
 
 def mark_as_unread(user):
     Notification.objects.filter(
-        receivers=user, notification_status=Notification.NotificationStatus.read
-    ).update(notification_status=Notification.NotificationStatus.unread)
+        receivers=user, state=Notification.NotificationState.read
+    ).update(state=Notification.NotificationState.unread)
+    return f"Notifications of user {user} marked as unread."
