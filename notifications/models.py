@@ -36,16 +36,16 @@ class Category(CreatedUpdatedMixin):
 class Notification(CreatedUpdatedMixin):
     """Stores the in app notifications of project"""
 
-    class NotificationTypes(models.TextChoices):
-        success = "success", "Success"
-        error = "error", "Error"
-        warning = "warning", "Warning"
-        info = "info", "Information"
+    class NotificationType(models.TextChoices):
+        success = "success", _("Success")
+        error = "error", _("Error")
+        warning = "warning", _("Warning")
+        info = "info", _("Information")
 
     class NotificationState(models.TextChoices):
-        read = "read", "Read"
-        unread = "unread", "Unread"
-        deleted = "deleted", "Deleted"
+        read = "read", _("Read")
+        unread = "unread", _("Unread")
+        deleted = "deleted", _("Deleted")
 
     title = models.CharField(max_length=265)
     message = models.TextField()
@@ -55,9 +55,13 @@ class Notification(CreatedUpdatedMixin):
     receivers = models.ManyToManyField(User, related_name="receivers_notifications")
     sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     notification_type = models.CharField(
-        choices=NotificationTypes.choices, max_length=20
+        choices=NotificationType.choices, max_length=20
     )
-    state = models.CharField(choices=NotificationState.choices, max_length=20)
+    state = models.CharField(
+        choices=NotificationState.choices,
+        max_length=20,
+        default=NotificationState.unread,
+    )
 
     def __str__(self) -> str:
         return self.title

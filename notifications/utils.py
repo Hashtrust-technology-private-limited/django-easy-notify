@@ -1,6 +1,7 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth import get_user_model
+from django.db.models import F
 
 from notifications.models import Category, Notification
 
@@ -38,9 +39,9 @@ def send_notification(
     if len(receivers) == 0:
         return "Please provide atleast one receiver."
     if notification_type not in list(
-        dict(Notification.NotificationTypes.choices).keys()
+        dict(Notification.NotificationType.choices).keys()
     ):
-        return "Please provide valid notification type. It should be one of ['success', 'error', 'warning', 'info']."
+        return f"Please provide valid notification type. It should be any of {list(dict(Notification.NotificationType.choices).keys())}."
 
     notification = Notification.objects.create(
         title=title,
@@ -61,7 +62,15 @@ def send_notification(
                 f"notifications_{receiver.pk}",  # Group Name, Should always be string
                 {
                     "type": "notify",  # Custom Function written in the consumers.py
-                    "content": [{"title": title, "message": message}],
+                    "content": [
+                        {
+                            "title": title,
+                            "message": message,
+                            "notification_type": notification.get_notification_type_display(),
+                            "category_type": category.title if category else "",
+                            "sender_name": sender.username if sender else "",
+                        }
+                    ],
                     "command": "new_notification",
                 },
             )
@@ -73,17 +82,23 @@ def get_notifications(user, notification_type=None):
         return (
             Notification.objects.prefetch_related("receivers")
             .filter(receivers=user)
+            .annotate(
+                sender_name=F("sender__username"), category_type=F("category__title")
+            )
             .values("title", "message", "notification_type")
         )
 
     if notification_type not in list(
-        dict(Notification.NotificationTypes.choices).keys()
+        dict(Notification.NotificationType.choices).keys()
     ):
-        return "Please provide valid notification status. It should be any of ['success', 'error', 'warning', 'info']."
+        return f"Please provide valid notification type. It should be any of {list(dict(Notification.NotificationType.choices).keys())}."
     else:
         return (
             Notification.objects.prefetch_related("receivers")
             .filter(receivers=user, notification_type=notification_type)
+            .annotate(
+                sender_name=F("sender__username"), category_type=F("category__title")
+            )
             .values("title", "message", "notification_type")
         )
 

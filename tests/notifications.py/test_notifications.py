@@ -50,7 +50,7 @@ class TestNotification(TestCase):
         )
         assert (
             response
-            == "Please provide valid notification type. It should be one of ['success', 'error', 'warning', 'info']."
+            == f"Please provide valid notification type. It should be any of {list(dict(Notification.NotificationType.choices).keys())}."
         )
 
     def test_valid_notification(self):
@@ -58,7 +58,7 @@ class TestNotification(TestCase):
             title=self.notification.title,
             receivers=self.receivers,
             sender=self.notification.sender,
-            notification_type=Notification.NotificationTypes.success,
+            notification_type=Notification.NotificationType.success,
             message=self.notification.message,
             category=self.notification.category,
             real_time_notification=True,
@@ -72,11 +72,11 @@ class TestNotification(TestCase):
 
     def test_get_notifications_by_type(self):
         self.warning_notification = NotificationFactory(
-            notification_type=Notification.NotificationTypes.warning
+            notification_type=Notification.NotificationType.warning
         )
         self.warning_notification.receivers.add(self.receivers[0])
         response = get_notifications(
-            self.receivers[0], Notification.NotificationTypes.warning
+            self.receivers[0], Notification.NotificationType.warning
         )
         assert len(response) == 1
         assert self.warning_notification.title == response[0]["title"]
