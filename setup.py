@@ -1,11 +1,17 @@
 from setuptools import find_packages, setup
 
+with open('README.md') as f:
+    long_description = f.read()
+
+import os
+
+version = os.environ.get('PACKAGE_VERSION', '1.0.0')
 setup(
     name="django-app-notifications",
-    version='{{VERSION_PLACEHOLDER}}',
+    version=version,
     description="A Django Library to send notifications",
     readme="README.md",
-    long_description="file: README.md",
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://www.example.com/",
     author="Hashtrust Technologies Private Limited",
