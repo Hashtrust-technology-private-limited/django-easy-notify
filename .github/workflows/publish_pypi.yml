@@ -18,13 +18,12 @@ jobs:
     - name: "Installs and upgrades pip, installs other dependencies and installs the package from setup.py"
       run: |
         python3 -m pip install --upgrade pip
-        python3 -m pip install setuptools wheel twine bump2version
+        python3 -m pip install setuptools wheel twine bumpversion
         pip install -r requirements.txt
         python3 setup.py install
     - name: Bump version
       run: |
-        # Use bump2version to increment the version
-        CURRENT_VERSION=$(python setup.py --version)
+        CURRENT_VERSION=$(python setup.cfg --version)
         NEW_VERSION=$(bump2version --list patch --allow-dirty | grep new_version | cut -d= -f2)
         export PACKAGE_VERSION=${NEW_VERSION}
         echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
