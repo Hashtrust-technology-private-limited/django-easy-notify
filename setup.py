@@ -1,8 +1,8 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
     name="django-app-notifications",
-    version='{{PACKAGE_VERSION}}',
+    version='{{VERSION_PLACEHOLDER}}',
     description="A Django Library to send notifications",
     readme="README.md",
     long_description="file: README.md",
@@ -25,8 +25,7 @@ setup(
         "Topic :: Communications :: Chat",
     ],
     include_package_data=True,
-    packages="find:",
-    python_requires=">=3.9",
+    packages=find_packages(),
     install_requires=[
         "Django",
         "channels",
