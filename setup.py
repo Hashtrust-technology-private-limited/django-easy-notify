@@ -24,7 +24,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Communications :: Chat",
     ],
-    include_package_data="true",
+    include_package_data=True,
     packages="find:",
     python_requires=">=3.9",
     install_requires=[
