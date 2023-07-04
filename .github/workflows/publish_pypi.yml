@@ -23,9 +23,13 @@ jobs:
         python3 setup.py install
     - name: Bump version
       run: |
-        bump2version patch --allow-dirty
-        export PACKAGE_VERSION=$(python setup.cfg --version)
+        # Use bump2version to increment the version
+        CURRENT_VERSION=$(python setup.py --version)
+        NEW_VERSION=$(bump2version --list patch --allow-dirty | grep new_version | cut -d= -f2)
+        export PACKAGE_VERSION=${NEW_VERSION}
         echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
+        sed -i "s/${CURRENT_VERSION}/${NEW_VERSION}/" setup.cfg
+
     - name: Build and Upload to TestPyPI
       run: |
         python3 setup.py sdist bdist_wheel
