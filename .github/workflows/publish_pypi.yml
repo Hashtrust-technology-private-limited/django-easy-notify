@@ -24,9 +24,9 @@ jobs:
     - name: Bump version
       run: |
         CURRENT_VERSION=$(python setup.py --version)
-        NEW_VERSION=$(bump2version --list patch --allow-dirty | grep new_version | cut -d= -f2)
+        NEW_VERSION=$(bumpversion --list patch --allow-dirty | grep new_version | cut -d= -f2)
         export PACKAGE_VERSION=${NEW_VERSION}
-        run echo "::set-output name=PACKAGE_VERSION::$PACKAGE_VERSION"
+        echo "::set-output name=PACKAGE_VERSION::$PACKAGE_VERSION"
         sed -i "s/{{VERSION_PLACEHOLDER}}/${{ steps.tag.outputs.PACKAGE_VERSION }}/g" setup.py
 
     - name: Build and Upload to TestPyPI
