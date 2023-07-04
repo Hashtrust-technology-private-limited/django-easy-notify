@@ -36,6 +36,9 @@ jobs:
     - name: Set env
       run: echo "VERSION_PLACEHOLDER=${{ steps.bump_version.outputs.PACKAGE_VERSION }}" >> $GITHUB_ENV
 
+    - name: Test
+      run: echo $VERSION_PLACEHOLDER
+
     - name: Build and Upload to TestPyPI
       run: |
         python3 setup.py sdist bdist_wheel
