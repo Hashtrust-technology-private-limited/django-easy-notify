@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 import os
 
-version = os.environ.get('PACKAGE_VERSION', '1.0.0')
+version = os.environ['VERSION_PLACEHOLDER']
 setup(
     name="django-app-notifications",
     version=version,
