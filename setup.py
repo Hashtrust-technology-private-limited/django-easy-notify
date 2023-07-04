@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="django-app-notifications",
-    version="{{PACKAGE_VERSION}}",
+    version='{{PACKAGE_VERSION}}',
     description="A Django Library to send notifications",
     readme="README.md",
     long_description="file: README.md",

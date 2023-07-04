@@ -36,6 +36,7 @@ repos:
     rev: 22.8.0
     hooks:
       - id: black
+        exclude: setup.py
     args: ["--line-length", "120", "--skip-string-normalization", "--skip-import-sort"]
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.9.2
