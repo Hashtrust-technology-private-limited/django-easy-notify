@@ -2,9 +2,8 @@ name: Publish Python 🐍 distributions 📦 to PyPI
 
 on:
   push:
-    branches:
-      - test-publish-action
-
+    tags:
+      - '*'
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI
@@ -21,23 +20,17 @@ jobs:
         python3 -m pip install setuptools wheel twine bumpversion
         pip install -r requirements.txt
 
-    - name: Bump version
-      run: |
-        CURRENT_VERSION=$(python setup.py --version)
-        NEW_VERSION=$(bumpversion --list patch --allow-dirty --new-version | cut -d= -f2)
-        echo "$NEW_VERSION" >> $GITHUB_OUTPUT
-        echo $NEW_VERSION
-      id: bump_version
+    - name: Extract tag name
+      id: tag
+      run: echo ::set-output name=TAG_NAME::$(echo $GITHUB_REF | cut -d / -f 3)
+
+    - name: Update version in setup.py
+      run: >-
+        sed -i "s/{{VERSION_PLACEHOLDER}}/${{ steps.tag.outputs.TAG_NAME }}/g" setup.py
 
     - name: installs the package from setup.py
       run: |
         python3 setup.py install
-
-    - name: Set env
-      run: echo "VERSION_PLACEHOLDER=${{ steps.bump_version.outputs.NEW_VERSION }}" >> $GITHUB_ENV
-
-    - name: Test
-      run: echo $VERSION_PLACEHOLDER
 
     - name: Build and Upload to TestPyPI
       run: |
