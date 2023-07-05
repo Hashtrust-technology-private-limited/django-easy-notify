@@ -26,6 +26,7 @@ jobs:
         CURRENT_VERSION=$(python setup.py --version)
         NEW_VERSION=$(bumpversion --list patch --allow-dirty --new-version | cut -d= -f2)
         echo "$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo $NEW_VERSION
       id: bump_version
 
     - name: installs the package from setup.py
