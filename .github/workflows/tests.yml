@@ -40,6 +40,6 @@ jobs:
         run: |
           coverage run -m pytest
           coverage report
-      - name: DjangoMails pytests
+      - name: Django Notifications pytests
         run: |
           pytest
