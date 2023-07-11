@@ -23,7 +23,6 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
     # Function to disconnet the Socket
     async def disconnect(self, close_code):
         await self.close()
-        # pass
 
     def get_async_notifications(self):
         self.notifications = list(
