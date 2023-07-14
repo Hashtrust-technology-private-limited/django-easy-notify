@@ -1,6 +1,6 @@
-# django-app-notifications
+# django-easy-notify
 
-django-notifications is Django App to create/send notification by calling just hit of single function.
+django-easy-notify is Django App to create/send notification by calling just hit of single function.
 
 Quick Start
 -----------
