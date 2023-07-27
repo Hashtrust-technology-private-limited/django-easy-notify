@@ -83,7 +83,7 @@ def get_notifications(user, notification_type=None):
             Notification.objects.prefetch_related("receivers")
             .filter(receivers=user)
             .annotate(
-                sender_name=F("sender__username"), category_type=F("category__title")
+                sender_name=F("sender__first_name"), category_type=F("category__title")
             )
             .values(
                 "title", "message", "notification_type", "sender_name", "category_type"
@@ -99,7 +99,7 @@ def get_notifications(user, notification_type=None):
             Notification.objects.prefetch_related("receivers")
             .filter(receivers=user, notification_type=notification_type)
             .annotate(
-                sender_name=F("sender__username"), category_type=F("category__title")
+                sender_name=F("sender__first_name"), category_type=F("category__title")
             )
             .values(
                 "title", "message", "notification_type", "sender_name", "category_type"
